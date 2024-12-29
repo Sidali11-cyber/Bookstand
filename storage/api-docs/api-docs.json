@@ -11,7 +11,7 @@
                     "Authentication"
                 ],
                 "summary": "Register a new user",
-                "description": "Register a new user.",
+                "description": "Create a new user account by providing the required details.",
                 "operationId": "8a56853624e025573120a09a4c75d468",
                 "requestBody": {
                     "required": true,
@@ -27,12 +27,12 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "John Doe"
+                                        "example": "username"
                                     },
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "john.doe@example.com"
+                                        "example": "user.doe@example.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -52,7 +52,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "User registered successfully",
+                        "description": "User registered successfully.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -70,7 +70,7 @@
                         }
                     },
                     "422": {
-                        "description": "Validation error"
+                        "description": "Validation error."
                     }
                 }
             }
@@ -80,7 +80,7 @@
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Login a user",
+                "summary": "User login",
                 "description": "Authenticate a user and return a JWT token.",
                 "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
                 "requestBody": {
@@ -96,7 +96,7 @@
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "john.doe@example.com"
+                                        "example": "user@example.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -111,10 +111,29 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Token returned"
+                        "description": "Login successful.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Unauthorized."
                     }
                 }
             }
@@ -125,14 +144,62 @@
                     "Authentication"
                 ],
                 "summary": "Get user profile",
-                "description": "Retrieve the authenticated user's profile.",
+                "description": "Retrieve the profile of the authenticated user.",
                 "operationId": "d32e56b6274eb68e980da6d91fbe9fd8",
                 "responses": {
                     "200": {
-                        "description": "User profile returned"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
+                        "description": "User profile fetched successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Log out user",
+                "description": "Log out the authenticated user and invalidate the JWT token.",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "responses": {
+                    "200": {
+                        "description": "Logout successful.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully logged out."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [

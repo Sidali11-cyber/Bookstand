@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReaderController;
 use App\Http\Controllers\AuthorController;
@@ -9,14 +8,16 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DownloadedBookController;
 
 // Authentication routes
-Route::post('login', [AuthController::class, 'login']); // User login route
-Route::post('register', [AuthController::class, 'register']); // User registration route
+Route::post('/register', [AuthController::class, 'register']); // User registration
+Route::post('/login', [AuthController::class, 'login']); // User login
+Route::middleware('auth:api')->group(function () {
+    Route::get('/profile', [AuthController::class, 'profile']); // Fetch user profile
+    Route::post('/logout', [AuthController::class, 'logout']); // Log out the user
+});
 
-// Secure routes
+// Web Services routes
 Route::middleware('auth:api')->group(function () {
 
-    Route::get('profile', [AuthController::class, 'profile']); // Get the authenticated user's profile
-    
     // Routes for readers
     Route::get('readers', [ReaderController::class, 'index']); // Get all readers
     Route::post('readers', [ReaderController::class, 'store']); // Create a new reader
